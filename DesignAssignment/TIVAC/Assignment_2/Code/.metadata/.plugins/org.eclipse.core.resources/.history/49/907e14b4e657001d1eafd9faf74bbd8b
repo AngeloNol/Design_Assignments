@@ -1,0 +1,368 @@
+#include <stdint.h>                         // Library of Standard Integer Types
+#include <stdbool.h>                        // Library of Standard Boolean Types
+#include "inc/tm4c123gh6pm.h"               // Definitions for interrupt and register assignments on Tiva C
+#include "inc/hw_memmap.h"                  // Macros defining the memory map of the Tiva C Series device
+#include "inc/hw_types.h"                   // Defines common types and macros
+#include "inc/hw_gpio.h"                    // Defines Macros for GPIO hardware
+#include "driverlib/sysctl.h"               // Defines and macros for System Control API of DriverLib
+#include "driverlib/interrupt.h"            // Defines and macros for NVIC Controller API of DriverLib
+#include "driverlib/gpio.h"                 // Defines and macros for GPIO API of DriverLib
+#include "driverlib/timer.h"                // Defines and macros for Timer API of driverLib
+#include "driverlib/adc.h"                  // Defines and macros for ADC API of driverLib
+#include "driverlib/rom.h"                  // Defines and macros for ROM API of driverLib
+#include "driverlib/uart.h"
+#include "driverlib/pin_map.h"
+#include "utils/uartstdio.h"
+#include "driverlib/debug.h"
+#include "inc/hw_ints.h"
+#include "math.h"
+#include "driverlib/i2c.h"
+#include "IQmath/IQmathLib.h"
+#include "driverlib/rom_map.h"
+#include "inc/hw_i2c.h"
+
+#include "i2c.h"
+
+
+#ifdef DEBUG
+void
+__error__(char *pcFilename, uint32_t ui32Line)
+{
+}
+#endif
+
+
+#define MPU_ADDRESS     0x68
+
+#define WHO_AM_I        0x75
+#define PWR_MGMT_1      0x6B
+#define SMPRT_DIV       0x19
+#define CONFIG          0x1A
+#define GYRO_CONFIG     0x1B
+#define ACC_CONFIG      0x1C
+#define INT_PIN_CFG     0x37
+#define INT_ENABLE      0x38
+
+#define ACCEL_XOUT_H    0x3B
+#define ACCEL_XOUT_L    0x3C
+#define ACCEL_YOUT_H    0x3D
+#define ACCEL_YOUT_L    0x3E
+#define ACCEL_ZOUT_H    0x3F
+#define ACCEL_ZOUT_L    0x40
+
+#define GYRO_XOUT_H     0x43
+#define GYRO_XOUT_L     0x44
+#define GYRO_YOUT_H     0x45
+#define GYRO_YOUT_L     0x46
+#define GYRO_ZOUT_H     0x47
+#define GYRO_ZOUT_L     0x48
+#define PI 3.14159265359
+#define dt 0.01
+#define ACCELEOMETER_SENSITIVITY 16385.0
+#define gyroscope_SENSITIVITY 16.4
+
+int WhoAmI, RegReset;
+
+int accXout_L, accXout_H, accXout;
+int accYout_L, accYout_H, accYout;
+int accZout_L, accZout_H, accZout;
+
+
+
+int gyroXout_L, gyroXout_H, gyroXout;
+int gyroYout_L, gyroYout_H, gyroYout;
+int gyroZout_L, gyroZout_H, gyroZout;
+
+
+_iq16 Acc[3],Gyro[3];
+_iq16 roll,pitch;
+double p,r,y;
+
+
+
+
+
+void initMPU6050();
+void MPUtestConnection();
+void readMPU();
+void ComplementaryFilter();
+void getAngle(_iq16 Ax, _iq16 Ay, _iq16 Az);
+
+
+
+
+int main(void){
+       SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
+
+        // Configure peripherals
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+
+        // Configure pins for UART
+        GPIOPinConfigure(GPIO_PA0_U0RX);
+        GPIOPinConfigure(GPIO_PA1_U0TX);
+        GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+        UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
+        UARTStdioConfig(0, 115200, 16000000);
+
+
+
+        GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
+
+        initI2C();
+        initMPU6050();
+        MPUtestConnection();
+
+
+
+
+        while(1){
+            readMPU();
+            SysCtlDelay(1000000);
+            ComplementaryFilter();
+            UARTprintf("Pitch :%d\n",(int)p);
+            UARTprintf("Roll :%d\n", (int)r);
+            UARTprintf("Yaw :%d\n", (int)y);
+
+        }
+
+
+
+
+
+}
+
+void initMPU6050()
+{
+
+
+
+    // wait untill reset is complete
+
+
+    writeI2C(MPU_ADDRESS, PWR_MGMT_1, (1 << 3) || 0x03 );       // power managment setup, temp sensor OFF, sleep mode OFF ...
+    writeI2C(MPU_ADDRESS, SMPRT_DIV, 0x01);                     // sample rate 1kHz
+    writeI2C(MPU_ADDRESS, CONFIG, 0x03);                        // disable FSYNC, 41 Hz gyro filtering, 1 kHz sampling      ??????????
+    writeI2C(MPU_ADDRESS, GYRO_CONFIG, (3 << 3));               // gyro full scale range --> 2000 deg/s (3 << 3)
+    writeI2C(MPU_ADDRESS, ACC_CONFIG, (2 << 3));                // acc full scale range  --> 8g (2 << 3)
+
+    writeI2C(MPU_ADDRESS, INT_PIN_CFG, 0x30);   // Configure INT pin or 0011 0000 ??? 0x30
+    writeI2C(MPU_ADDRESS, INT_ENABLE, 0x01);    // Enable interrupt DATA READY bit
+
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+    SysCtlDelay(3);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, GPIO_PIN_2); // Set as input
+
+
+}
+
+
+void MPUtestConnection()
+{
+
+    readI2C(MPU_ADDRESS, WHO_AM_I, &WhoAmI);
+    if(WhoAmI == 0x68)
+    {
+        UARTprintf("Connection successful ! \n");
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, GPIO_PIN_3);
+        SysCtlDelay(1000000);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, 0x0);
+    }
+
+}
+
+void readMPU()
+{
+
+
+
+    readI2C(MPU_ADDRESS, ACCEL_XOUT_H, &accXout_H);
+    readI2C(MPU_ADDRESS, ACCEL_XOUT_L, &accXout_L);
+    readI2C(MPU_ADDRESS, ACCEL_YOUT_H, &accYout_H);
+    readI2C(MPU_ADDRESS, ACCEL_YOUT_L, &accYout_L);
+    readI2C(MPU_ADDRESS, ACCEL_ZOUT_H, &accZout_H);
+    readI2C(MPU_ADDRESS, ACCEL_ZOUT_L, &accZout_L);
+
+    readI2C(MPU_ADDRESS, GYRO_XOUT_H, &gyroXout_H);
+    readI2C(MPU_ADDRESS, GYRO_XOUT_L, &gyroXout_L);
+    readI2C(MPU_ADDRESS, GYRO_YOUT_H, &gyroYout_H);
+    readI2C(MPU_ADDRESS, GYRO_YOUT_L, &gyroYout_L);
+    readI2C(MPU_ADDRESS, GYRO_ZOUT_H, &gyroZout_H);
+    readI2C(MPU_ADDRESS, GYRO_ZOUT_L, &gyroZout_L);
+
+    accXout = ((accXout_H << 8) | accXout_L);
+    accYout = ((accYout_H << 8) | accYout_L);
+    accZout = ((accZout_H << 8) | accZout_L);
+
+    gyroXout = ((gyroXout_H << 8) | gyroXout_L);
+    gyroYout = ((gyroYout_H << 8) | gyroYout_L);
+    gyroZout = ((gyroZout_H << 8) | gyroZout_L);
+
+
+    if(accXout&0x8000) accXout|=0xFFFF0000;
+    if(accYout&0x8000) accYout|=0xFFFF0000;
+    if(accZout&0x8000) accZout|=0xFFFF0000;
+
+    if(gyroXout&0x8000) gyroXout|=0xFFFF0000;
+    if(gyroYout&0x8000) gyroYout|=0xFFFF0000;
+    if(gyroZout&0x8000) gyroZout|=0xFFFF0000;
+
+
+
+
+    Acc[0] =  _IQ16(accXout);
+    Acc[1] =  _IQ16(accYout);
+    Acc[2] =  _IQ16(accZout);
+
+
+
+
+
+
+    Gyro[0] = _IQ16(gyroXout);
+    Gyro[1] = _IQ16(gyroYout);
+    Gyro[2] = _IQ16(gyroZout);
+
+    getAngle(Acc[0],Acc[1],Acc[2]);
+
+
+}
+void getAngle(_iq16 Ax, _iq16 Ay, _iq16 Az){
+
+   _iq16 x = Ax;
+   _iq16 y = Ay;
+   _iq16 z = Az;
+   _iq16 tmpP,tmpPy,tmpPz,tmptotalP, tmpPDiv;
+   _iq16 tmpR,tmpRx,tmpRz,tmptotalR, tmpRDiv;
+   _iq16 degree;
+
+   tmpPy = _IQ16mpy(y,y);
+   tmpPz = _IQ16mpy(z,z);
+   tmptotalP = tmpPy + tmpPz;
+   tmpP = _IQ16sqrt(tmptotalP);
+   tmpPDiv = _IQ16div(x,tmpP);
+   pitch = _IQ16atan(tmpPDiv);
+
+   tmpRx = _IQ16mpy(x,x);
+   tmpRz = _IQ16mpy(z,z);
+   tmptotalR = tmpRx + tmpRz;
+   tmpR = _IQ16sqrt(tmptotalR);
+   tmpRDiv = _IQ16div(y,tmpR);
+   roll = _IQ16atan(tmpRDiv);
+
+
+   //converting radians to degrees
+   degree =  _IQ16div((_iq16)180.0,(_iq16)3.14);
+   pitch = _IQ16mpy(pitch,degree);
+   roll = _IQ16mpy(roll,degree);
+
+
+
+
+}
+void ComplementaryFilter(){
+
+
+
+     _iq16 rollAcc,pitchAcc,tmppitch,tmproll,tmp1,tmp2;
+     double iq;
+
+     iq = pow(2,-16);
+
+
+
+
+     tmp1 = _IQ16div(Gyro[0],(_iq16)gyroscope_SENSITIVITY);
+     tmp1 = _IQ16mpy(tmp1,(_iq16)dt);
+     pitch = pitch + tmp1;
+     //pitch += _IQ16div(Gyro[0],gyroscope_SENSITIVITY) * dt;
+     tmp2 = _IQ16div(Gyro[1],(_iq16)gyroscope_SENSITIVITY);
+     tmp2 = _IQ16mpy(tmp2,(_iq16)dt);
+     roll = roll - tmp2;
+     //roll -= _IQ16div(Gyro[1],gyroscope_SENSITIVITY) * dt;
+
+     acc[0] = _IQ16toF(Acc[0]);
+     acc[1] = _IQ16toF(Acc[1]);
+     acc[2] = _IQ16toF(Acc[2]);
+
+
+    int forceMagnitude = abs((int)acc[0]) + abs((int)acc[1]) + abs((int)acc[2]) ;
+    if(forceMagnitude > 8129 && forceMagnitude < 32768){
+
+        pitchAcc = _IQ16atan2(Acc[1],Acc[2]);
+        pitchAcc =_IQ16mpy(pitchAcc,(_iq16)180);
+        pitchAcc = _IQ16div(pitchAcc,(_iq16)PI);
+        pitch = _IQ16mpy(pitch,(_iq16)0.98);
+        tmppitch = _IQ16mpy(pitchAcc,(_iq16)0.02);
+        pitch = pitch + tmppitch;
+
+
+        rollAcc = _IQ16atan2(Acc[0],Acc[2]);
+        rollAcc =_IQ16mpy(rollAcc,(_iq16)180);
+        rollAcc = _IQ16div(rollAcc,(_iq16)PI);
+        roll = _IQ16mpy(roll,(_iq16)0.98);
+        tmproll = _IQ16mpy(rollAcc,(_iq16)0.02);
+        roll = roll + tmproll;
+
+        p = pitch * iq;
+        r = roll * iq
+        y = Gyro[2] * iq;
+
+    }
+
+
+
+
+
+}
+
+
+void initI2C(void)
+{
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C0);
+    SysCtlDelay(3);
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    SysCtlDelay(3);
+
+    GPIOPinConfigure(GPIO_PB2_I2C0SCL);
+    GPIOPinConfigure(GPIO_PB3_I2C0SDA);
+
+    GPIOPinTypeI2CSCL(GPIO_PORTB_BASE, GPIO_PIN_2);
+    GPIOPinTypeI2C(GPIO_PORTB_BASE, GPIO_PIN_3);
+
+    I2CMasterInitExpClk(I2C0_BASE, SysCtlClockGet(), true);
+
+    HWREG(I2C0_BASE + I2C_O_FIFOCTL) = 80008000;
+}
+
+void readI2C(uint8_t slave_addr, uint8_t reg, int *data)
+{
+    I2CMasterSlaveAddrSet(I2C0_BASE, slave_addr, false);
+    I2CMasterDataPut(I2C0_BASE, reg);
+    I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_BURST_SEND_START);
+    while(I2CMasterBusy(I2C0_BASE));
+    I2CMasterSlaveAddrSet(I2C0_BASE, slave_addr, true);
+    I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
+    while(I2CMasterBusy(I2C0_BASE));
+    *data = I2CMasterDataGet(I2C0_BASE);
+}
+
+
+// Sends 1 byte over i2c
+void writeI2C(uint8_t slave_addr, uint8_t reg, uint8_t data)
+{
+    I2CMasterSlaveAddrSet(I2C0_BASE, slave_addr, false);
+    I2CMasterDataPut(I2C0_BASE, reg);
+    I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_BURST_SEND_START);
+    while(I2CMasterBusy(I2C0_BASE));
+    I2CMasterDataPut(I2C0_BASE, data);
+    I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_BURST_SEND_FINISH);
+    while(I2CMasterBusy(I2C0_BASE));
+}
+

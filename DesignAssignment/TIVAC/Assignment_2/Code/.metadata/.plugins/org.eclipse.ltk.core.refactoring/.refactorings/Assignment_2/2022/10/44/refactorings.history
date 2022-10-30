@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;Assignment_2/blinky.c&apos; to &apos;AS2.c&apos;" description="Rename resource &apos;blinky.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="blinky.c" name="AS2.c" stamp="1666621863039" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;Assignment_2/blinky_ccs.cmd&apos; to &apos;AS2_ccs.cmd&apos;" description="Rename resource &apos;blinky_ccs.cmd&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="blinky_ccs.cmd" name="AS2_ccs.cmd" stamp="1666621875494" updateReferences="true"/>
+</session>

@@ -1,0 +1,12 @@
+
+**** Clean-only build of configuration Debug for project Assignment_2 ****
+
+"C:\\ti\\ccs1210\\ccs\\utils\\bin\\gmake" -k clean 
+ 
+DEL /F  "Assignment_2.bin"  "Assignment_2.out" 
+DEL /F "AS2.obj" "startup_ccs.obj" "uartstdio.obj" 
+DEL /F "AS2.d" "startup_ccs.d" "uartstdio.d" 
+Finished clean
+ 
+
+**** Build Finished ****
