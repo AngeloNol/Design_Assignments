@@ -1,0 +1,12 @@
+-----TI-REX started at Thu Nov 03 2022 13:46:10 GMT-0700 (Pacific Daylight Time)
+Thu, 03 Nov 2022 20:46:19 GMT connect deprecated methodOverride: use method-override npm module instead at app.js:647:21
+4",
+        "mac": "0a:00:27:00:00:0d",
+        "internal": false
+    }
+]
+removing old log file tirex-2022-10-20.log
+removing old log file tirex-2022-10-25.log
+-----TI-REX started at Thu Nov 03 2022 13:46:10 GMT-0700 (Pacific Daylight Time)
+TIREX server listening on port 55432
+About to exit with code:  0

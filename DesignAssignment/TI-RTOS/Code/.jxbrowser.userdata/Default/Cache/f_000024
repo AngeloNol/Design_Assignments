@@ -1,0 +1,724 @@
+[
+  {
+    "_id": "4696525068782859960532",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Arm®-based microcontrollers",
+        "Embedded Software"
+      ]
+    ],
+    "components": [],
+    "customGlobalResourceUids": [
+      "tirtos_tivac"
+    ],
+    "dependencies": [
+      {
+        "refId": "xdctools",
+        "require": "optional",
+        "semver": "3.32.0",
+        "version": "3.32.00.06",
+        "versionRange": "3.32.00.06"
+      }
+    ],
+    "description": "TI-RTOS accelerates development schedules by eliminating the need to create basic system software functions from scratch. TI-RTOS scales from a real-time multitasking kernel - TI-RTOS Kernel (formerly known as SYS/BIOS) - to a complete RTOS solution including additional middleware components, device drivers and power management. The combination of TI-RTOS power management and TI's ultra low-power MCUs enables developers to design applications with much longer battery life. By providing essential system software components pre-tested and pre-integrated, TI-RTOS enables developers to focus on differentiating their application.",
+    "devices": [],
+    "devicesVariants": [],
+    "fullPaths": [
+      [
+        "Arm®-based microcontrollers",
+        "Embedded Software"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsCustomAliasPublicIds": [
+      [
+        "ALw..F84P5oOmnCUM7zGVQ"
+      ]
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AIpXeZKO82wTalSvQhUXkg"
+    ],
+    "hideByDefault": true,
+    "id": "tirtos_tivac",
+    "image": "C:/ti/tirtos_tivac_2_16_00_08/docs/icons/tirtos_tivac.png",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "tirtos_tivac_2_16_00_08"
+    ],
+    "includedResources": [
+      {
+        "package": "tirtos_tivac__2.16.00.08"
+      }
+    ],
+    "installPath": {
+      "linux": "tirtos_tivac_2_16_00_08/tirtos_tivac_2_16_00_08__linux.zip",
+      "macos": "tirtos_tivac_2_16_00_08/tirtos_tivac_2_16_00_08__macos.zip",
+      "win": "tirtos_tivac_2_16_00_08/tirtos_tivac_2_16_00_08__win.zip"
+    },
+    "local": "full",
+    "localPackagePath": "C:/ti/tirtos_tivac_2_16_00_08",
+    "modifiedValues": {
+      "rootCategory": [
+        "Software",
+        "TI-RTOS for TivaC"
+      ]
+    },
+    "name": "TI-RTOS for TivaC",
+    "order": 0,
+    "package": "TI-RTOS for TivaC",
+    "packageId": "tirtos_tivac",
+    "packageOrder": 4,
+    "packagePath": "tirtos_tivac_2_16_00_08",
+    "packageUId": "tirtos_tivac__2.16.00.08",
+    "packageVersion": "2.16.00.08",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Arm®-based microcontrollers",
+      "Embedded Software",
+      "TI-RTOS for TivaC"
+    ],
+    "semver": "2.16.0",
+    "type": "software",
+    "version": "2.16.00.08"
+  },
+  {
+    "_id": "4693902975276486288547",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Software"
+      ]
+    ],
+    "customGlobalResourceUids": [
+      "tm4c"
+    ],
+    "dependencies": [],
+    "description": "Texas Instruments' TM4C12x MCUs offer the industry’s popular ARM® Cortex®-M4F core with scalable memory and package options, unparalleled connectivity peripherals, advanced application functions, industry-leading analog integration, and extensive software solutions. In addition, Texas Instruments offers a complete solution to get to market quickly, with evaluation and development boards, white papers, application notes, an easy-to-use peripheral driver library, and a strong support, sales, and distributor network.</p><p>For more information, go to <a target='_blank' href='http://www.ti.com/lsds/ti/microcontrollers_16-bit_32-bit/c2000_performance/control_automation/tm4c12x/overview.page'>TM4C12x MCUs</a>.</p><p><br><font size=2>LaunchPad, BoosterPack, and TivaWare are trademarks of Texas Instruments.<br>ARM and Cortex are registered trademarks of ARM Limited.<br>microSD is a registered trademark of SD-3C, LLC.<br>OLED is a registered trademark of LG Electronics Inc. Corporation.<br>All other trademarks are the property of their respective owners.</font></p>",
+    "devices": [
+      "TM4C",
+      "TM4C129X",
+      "TM4C123X",
+      "TM4C123GH6PGE",
+      "TM4C129XNCZAD",
+      "TM4C1294NCPDT",
+      "TM4C129ENCPDT",
+      "TM4C123GH6PM"
+    ],
+    "devicesVariants": [
+      "TM4C129X",
+      "TM4C123X",
+      "TM4C123GH6PGE",
+      "TM4C129XNCZAD",
+      "TM4C1294NCPDT",
+      "TM4C129ENCPDT",
+      "TM4C123GH6PM"
+    ],
+    "devtools": [
+      "Code Composer Studio (CCS)",
+      "UniFlash",
+      "PinMux",
+      "GUI Composer",
+      "XDS100v2 JTAG Debug Probe (14-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (20-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (ARM version)",
+      "XDS110 Debug Probe",
+      "XDS200 USB Debug Probe",
+      "XDS560v2 System Trace USB Debug Probe"
+    ],
+    "devtools_category": [
+      "Code Composer Studio (CCS)",
+      "UniFlash",
+      "PinMux",
+      "GUI Composer",
+      "XDS100v2 JTAG Debug Probe (14-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (20-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (ARM version)",
+      "XDS110 Debug Probe",
+      "XDS200 USB Debug Probe",
+      "XDS560v2 System Trace USB Debug Probe"
+    ],
+    "fullPaths": [
+      [
+        "Software"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AJxBIggqYR1aGLaSGbnCmg"
+    ],
+    "id": "tm4c",
+    "image": "C:\\ti\\tivaware_c_series_2_1_4_178/.metadata/images/TivaWare.png",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "tivaware_c_series_2_1_4_178"
+    ],
+    "includedResources": [
+      {
+        "package": "tm4c__2.1.4.178"
+      }
+    ],
+    "installPath": {
+      "linux": "tivaware_c_series_2_1_4_178/tivaware_c_series_2_1_4_178__linux.zip",
+      "macos": "tivaware_c_series_2_1_4_178/tivaware_c_series_2_1_4_178__macos.zip",
+      "win": "tivaware_c_series_2_1_4_178/tivaware_c_series_2_1_4_178__win.zip"
+    },
+    "license": "tivaware_c_series_2_1_4_178/EULA.txt",
+    "local": "full",
+    "localPackagePath": "C:\\ti\\tivaware_c_series_2_1_4_178",
+    "metadataVersion": "3.0.0",
+    "name": "TM4C ARM® Cortex®-M4F MCU",
+    "package": "TM4C ARM® Cortex®-M4F MCU",
+    "packageId": "tm4c",
+    "packageOrder": 5,
+    "packagePath": "tivaware_c_series_2_1_4_178",
+    "packageUId": "tm4c__2.1.4.178",
+    "packageVersion": "2.1.4.178",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Software",
+      "TM4C ARM® Cortex®-M4F MCU"
+    ],
+    "semver": "2.1.4",
+    "type": "software",
+    "version": "2.1.4.178"
+  },
+  {
+    "_id": "4694691500318927208625",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Software"
+      ]
+    ],
+    "components": [],
+    "customGlobalResourceUids": [
+      "xdctools"
+    ],
+    "dependencies": [],
+    "description": "Tools for developing and using embedded target content that extends or depends on <a href:\"http://www.eclipse.org/rtsc\">RTSC</a> components",
+    "devices": [],
+    "devicesVariants": [],
+    "fullPaths": [
+      [
+        "Software"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsCustomAliasPublicIds": [
+      []
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AP82c8D8M4mZXxQLeHb-PA"
+    ],
+    "hideByDefault": true,
+    "id": "xdctools",
+    "image": "C:/ti/xdctools_3_62_01_15_core/.metadata/.tirex/logo.png",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "xdctools_3_62_01_15_core"
+    ],
+    "includedResources": [
+      {
+        "package": "xdctools__3.62.01.15"
+      }
+    ],
+    "installPath": {
+      "linux": "xdctools_3_62_01_15_core/linux/xdctools_3_62_01_15_core__linux.zip",
+      "macos": "xdctools_3_62_01_15_core/macos/xdctools_3_62_01_15_core__macos.zip",
+      "win": "xdctools_3_62_01_15_core/win/xdctools_3_62_01_15_core__win.zip"
+    },
+    "local": "full",
+    "localPackagePath": "C:/ti/xdctools_3_62_01_15_core",
+    "metadataVersion": "3.0.0",
+    "modifiedValues": {
+      "rootCategory": [
+        "Software",
+        "XDCTools"
+      ]
+    },
+    "name": "XDCTools",
+    "order": 0,
+    "package": "XDCTools",
+    "packageId": "xdctools",
+    "packageOrder": 23,
+    "packagePath": "xdctools_3_62_01_15_core",
+    "packageUId": "xdctools__3.62.01.15",
+    "packageVersion": "3.62.01.15",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Software",
+      "XDCTools"
+    ],
+    "semver": "3.62.1",
+    "tags": [
+      "ROV",
+      "RTA",
+      "XDCtools",
+      "XDC",
+      "RTSC",
+      "SYS/BIOS",
+      "TI-RTOS"
+    ],
+    "type": "software",
+    "version": "3.62.01.15"
+  },
+  {
+    "_id": "46913482879339090425382",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Software Tools"
+      ]
+    ],
+    "customGlobalResourceUids": [
+      "arm.gnu"
+    ],
+    "dependencies": [],
+    "description": "The Arm GNU Embedded Toolchain is a ready-to-use, open source suite of tools for C, C++ and Assembly programming targeting Arm Cortex-M and Cortex-R family of processors.",
+    "devices": [],
+    "devicesVariants": [],
+    "fullPaths": [
+      [
+        "Software Tools"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AKXUctHODW.MOfhnjKPo2w"
+    ],
+    "id": "arm.gnu",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "gcc_arm_none_eabi_9_2_1"
+    ],
+    "includedResources": [
+      {
+        "package": "arm.gnu__9.2.1"
+      }
+    ],
+    "installPath": {
+      "linux": "gcc_arm_none_eabi_9_2_1/gcc_arm_none_eabi_9_2_1__linux.zip",
+      "macos": "gcc_arm_none_eabi_9_2_1/gcc_arm_none_eabi_9_2_1__macos.zip",
+      "win": "gcc_arm_none_eabi_9_2_1/gcc_arm_none_eabi_9_2_1__win.zip"
+    },
+    "local": "full",
+    "localPackagePath": "C:\\ti\\gcc_arm_none_eabi_9_2_1",
+    "metadataVersion": "3.0.0",
+    "name": "Arm GNU Embedded Toolchain",
+    "package": "Arm GNU Embedded Toolchain",
+    "packageId": "arm.gnu",
+    "packageOrder": 99,
+    "packagePath": "gcc_arm_none_eabi_9_2_1",
+    "packageUId": "arm.gnu__9.2.1",
+    "packageVersion": "9.2.1",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Software Tools",
+      "Arm GNU Embedded Toolchain"
+    ],
+    "semver": "9.2.1",
+    "type": "software",
+    "version": "9.2.1"
+  },
+  {
+    "_id": "46917786507245351687469",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Software Tools"
+      ]
+    ],
+    "customGlobalResourceUids": [
+      "ti_cgt_tiarmclang"
+    ],
+    "dependencies": [],
+    "description": "The TI Arm Clang 2.1.0.LTS C/C++ Compiler Tools support development of applications for Cortex-M and Cortex-R Arm cores. This is a long term support release.",
+    "devices": [],
+    "devicesVariants": [],
+    "fullPaths": [
+      [
+        "Software Tools"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AIYBJW8QAauXjUhdPdtbmw"
+    ],
+    "id": "ti_cgt_tiarmclang",
+    "image": "C:\\ti\\ti_cgt_tiarmclang_2.1.0.LTS/.metadata/.tirex",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "ti_cgt_tiarmclang_2.1.0.LTS"
+    ],
+    "includedResources": [
+      {
+        "package": "ti_cgt_tiarmclang__2.01.00.00"
+      }
+    ],
+    "installPath": {
+      "linux": "ti_cgt_tiarmclang_2.1.0.LTS/linux/ti_cgt_tiarmclang_2.1.0.LTS__linux.zip",
+      "macos": "ti_cgt_tiarmclang_2.1.0.LTS/macos/ti_cgt_tiarmclang_2.1.0.LTS__macos.zip",
+      "win": "ti_cgt_tiarmclang_2.1.0.LTS/win/ti_cgt_tiarmclang_2.1.0.LTS__win.zip"
+    },
+    "local": "full",
+    "localPackagePath": "C:\\ti\\ti_cgt_tiarmclang_2.1.0.LTS",
+    "metadataVersion": "3.0.0",
+    "name": "TI Arm Clang 2.1.0 LTS Compiler",
+    "package": "TI Arm Clang 2.1.0 LTS Compiler",
+    "packageId": "ti_cgt_tiarmclang",
+    "packageOrder": 350,
+    "packagePath": "ti_cgt_tiarmclang_2.1.0.LTS",
+    "packageUId": "ti_cgt_tiarmclang__2.01.00.00",
+    "packageVersion": "2.01.00.00",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Software Tools",
+      "TI Arm Clang 2.1.0 LTS Compiler"
+    ],
+    "semver": "2.1.0",
+    "type": "software",
+    "version": "2.01.00.00"
+  },
+  {
+    "_id": "4697148804771330935521",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Software"
+      ]
+    ],
+    "customGlobalResourceUids": [
+      "com.ti.SIMPLELINK_CC13XX_CC26XX_SDK"
+    ],
+    "dependencies": [
+      {
+        "refId": "sysconfig",
+        "require": "mandatory",
+        "semver": "1.13.0",
+        "version": "1.13.0",
+        "versionRange": "1.13.0"
+      },
+      {
+        "refId": "xdctools",
+        "require": "optional",
+        "semver": "3.62.1",
+        "version": "3.62.01.15",
+        "versionRange": "3.62.01.15"
+      },
+      {
+        "refId": "ti_cgt_tiarmclang",
+        "require": "optional",
+        "semver": "2.1.0",
+        "version": "2.1.0",
+        "versionRange": "2.1.0"
+      },
+      {
+        "refId": "arm.gnu",
+        "require": "optional",
+        "semver": "0.0.0",
+        "version": "9.2",
+        "versionRange": "9.2"
+      },
+      {
+        "refId": "com.ti.SIMPLELINK_ACADEMY_CC13XX_CC26XX_SDK",
+        "require": "optional",
+        "semver": "6.20.0",
+        "version": "6.20.00.00",
+        "versionRange": "6.20.00.00"
+      }
+    ],
+    "description": "<p>The SimpleLink™ CC13xx_CC26xx Software Development Kit (SDK) continues support for devices previously supported in the SimpleLink™ CC13x2_CC26x2 SDK. This SDK is backwards compatible for qualification purposes with previous SDK versions. CC13x0 and CC2640R2 devices will continue to use their respective SDKs.</p><p>The SimpleLink™ CC13xx_CC26xx Software Development Kit (SDK) delivers components that enable engineers to develop applications on the Texas Instruments SimpleLink CC13xx and CC26xx family of wireless microcontroller (MCUs). This software toolkit provides a cohesive and consistent software experience for all SimpleLink CC13xx and CC26xx wireless MCU users by packaging essential software components, such as a Bluetooth® low energy (BLE) protocol stack supporting Bluetooth 5, Thread 1.1 networking stack based on OpenThread, ZigBee 3.0 compliant protocol suite, RF-Proprietary examples, TI's 15.4 Stack as well as the TI-RTOS kernel and TI Drivers in one easy-to-use software package along with example applications and documentation. In addition, the Dynamic Multi-Protocol Manager (DMM) software component enables multiprotocol development on a single SimpleLink wireless MCU through time division multiplexing. The SimpleLink MCU portfolio offers a single development environment that delivers flexible hardware, software and tool options for customers developing wired and wireless applications. With 100 percent code reuse across host MCUs, Wi-Fi™, Bluetooth low energy, Sub-1GHz devices and more, choose the MCU or connectivity standard that fits your design. A one-time investment with the SimpleLink software development kit (SDK) allows you to reuse often, opening the door to create unlimited applications. For more information, visit <a href=\"http://www.ti.com/simplelink\">http://www.ti.com/simplelink</a>.</p>",
+    "devices": [
+      "CC13X2",
+      "CC13X2X7",
+      "CC13X1",
+      "CC26X2",
+      "CC26X2X7",
+      "CC26X1",
+      "CC1312R1F3",
+      "CC1352R1F3",
+      "CC1352P1F3",
+      "CC1312R7",
+      "CC1352P7",
+      "CC1311R3",
+      "CC1311P3",
+      "CC2642R1F",
+      "CC2652R1F",
+      "CC2652RB1F",
+      "CC2652P1F",
+      "CC2652RSIP",
+      "CC2652PSIP",
+      "CC2652R7",
+      "CC2652P7",
+      "CC2651R3",
+      "CC2651P3",
+      "CC2651R3SIPA"
+    ],
+    "devicesVariants": [
+      "CC1312R1F3",
+      "CC1352R1F3",
+      "CC1352P1F3",
+      "CC1312R7",
+      "CC1352P7",
+      "CC1311R3",
+      "CC1311P3",
+      "CC2642R1F",
+      "CC2652R1F",
+      "CC2652RB1F",
+      "CC2652P1F",
+      "CC2652RSIP",
+      "CC2652PSIP",
+      "CC2652R7",
+      "CC2652P7",
+      "CC2651R3",
+      "CC2651P3",
+      "CC2651R3SIPA"
+    ],
+    "devtools": [
+      "CC1312R LaunchPad",
+      "CC1352R LaunchPad",
+      "CC1352P1 LaunchPad",
+      "CC1352P-2 LaunchPad",
+      "CC1352P-4 LaunchPad",
+      "CC1312R7 LaunchPad",
+      "CC1352P7-1 LaunchPad",
+      "CC1352P7-4 LaunchPad",
+      "CC1311P3 LaunchPad",
+      "ULP Sense BoosterPack",
+      "CC26x2R LaunchPad",
+      "CC2652RB LaunchPad",
+      "CC2652RSIP LaunchPad",
+      "CC2652PSIP LaunchPad",
+      "CC2652R7 LaunchPad",
+      "CC2651P3 LaunchPad",
+      "CC2651R3SIPA LaunchPad",
+      "SEGGER J-Link",
+      "IAR I-JET",
+      "IAR Embedded Workbench for ARM",
+      "ELPROTRONIC",
+      "SEGGER",
+      "ELNEC",
+      "BPM Microsystems",
+      "DATA IO",
+      "Sensor Controller Studio",
+      "SmartRF Studio",
+      "SmartRF Packet Sniffer 2",
+      "Open On-Chip Debugger (OpenOCD) for SimpleLink™ Connected MCUs",
+      "Code Composer Studio (CCS)",
+      "UniFlash",
+      "PinMux",
+      "GUI Composer",
+      "XDS100v2 JTAG Debug Probe (14-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (20-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (ARM version)",
+      "XDS110 Debug Probe",
+      "XDS200 USB Debug Probe",
+      "XDS560v2 System Trace USB Debug Probe"
+    ],
+    "devtools_category": [
+      "CC1312R LaunchPad",
+      "CC1352R LaunchPad",
+      "CC1352P1 LaunchPad",
+      "CC1352P-2 LaunchPad",
+      "CC1352P-4 LaunchPad",
+      "CC1312R7 LaunchPad",
+      "CC1352P7-1 LaunchPad",
+      "CC1352P7-4 LaunchPad",
+      "CC1311P3 LaunchPad",
+      "ULP Sense BoosterPack",
+      "CC26x2R LaunchPad",
+      "CC2652RB LaunchPad",
+      "CC2652RSIP LaunchPad",
+      "CC2652PSIP LaunchPad",
+      "CC2652R7 LaunchPad",
+      "CC2651P3 LaunchPad",
+      "CC2651R3SIPA LaunchPad",
+      "SEGGER J-Link",
+      "IAR I-JET",
+      "IAR Embedded Workbench for ARM",
+      "ELPROTRONIC",
+      "SEGGER",
+      "ELNEC",
+      "BPM Microsystems",
+      "DATA IO",
+      "Sensor Controller Studio",
+      "SmartRF Studio",
+      "SmartRF Packet Sniffer 2",
+      "Open On-Chip Debugger (OpenOCD) for SimpleLink™ Connected MCUs",
+      "Code Composer Studio (CCS)",
+      "UniFlash",
+      "PinMux",
+      "GUI Composer",
+      "XDS100v2 JTAG Debug Probe (14-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (20-pin TI version)",
+      "XDS100v2 JTAG Debug Probe (ARM version)",
+      "XDS110 Debug Probe",
+      "XDS200 USB Debug Probe",
+      "XDS560v2 System Trace USB Debug Probe"
+    ],
+    "fullPaths": [
+      [
+        "Software"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AHvG.HrsKdqzrdtp4gZ90w"
+    ],
+    "id": "com.ti.SIMPLELINK_CC13XX_CC26XX_SDK",
+    "image": "C:\\ti\\simplelink_cc13xx_cc26xx_sdk_6_20_00_29/.metadata/.tirex/cc13xx_cc26xx-tirex.png",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "simplelink_cc13xx_cc26xx_sdk_6_20_00_29"
+    ],
+    "includedResources": [
+      {
+        "package": "com.ti.SIMPLELINK_CC13XX_CC26XX_SDK__6.20.00.29"
+      }
+    ],
+    "installPath": {
+      "linux": "simplelink_cc13xx_cc26xx_sdk_6_20_00_29/linux/simplelink_cc13xx_cc26xx_sdk_6_20_00_29__linux.zip",
+      "macos": "simplelink_cc13xx_cc26xx_sdk_6_20_00_29/macos/simplelink_cc13xx_cc26xx_sdk_6_20_00_29__macos.zip",
+      "win": "simplelink_cc13xx_cc26xx_sdk_6_20_00_29/win/simplelink_cc13xx_cc26xx_sdk_6_20_00_29__win.zip"
+    },
+    "license": "simplelink_cc13xx_cc26xx_sdk_6_20_00_29/license_simplelink_cc13xx_cc26xx_sdk_6_20_00_29.txt",
+    "local": "full",
+    "localPackagePath": "C:\\ti\\simplelink_cc13xx_cc26xx_sdk_6_20_00_29",
+    "metadataVersion": "3.0.0",
+    "name": "SimpleLink CC13xx CC26xx SDK",
+    "package": "SimpleLink CC13xx CC26xx SDK",
+    "packageId": "com.ti.SIMPLELINK_CC13XX_CC26XX_SDK",
+    "packageOrder": 396,
+    "packagePath": "simplelink_cc13xx_cc26xx_sdk_6_20_00_29",
+    "packageUId": "com.ti.SIMPLELINK_CC13XX_CC26XX_SDK__6.20.00.29",
+    "packageVersion": "6.20.00.29",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Software",
+      "SimpleLink CC13xx CC26xx SDK"
+    ],
+    "semver": "6.20.0",
+    "type": "software",
+    "version": "6.20.00.29"
+  },
+  {
+    "_id": "469340828882461232565",
+    "allowPartialDownload": false,
+    "categories": [
+      [
+        "Software Tools"
+      ]
+    ],
+    "components": [],
+    "customGlobalResourceUids": [
+      "sysconfig"
+    ],
+    "dependencies": [],
+    "description": "SysConfig Tool",
+    "devices": [],
+    "devicesVariants": [],
+    "fullPaths": [
+      [
+        "Software Tools"
+      ]
+    ],
+    "fullPathsCoreTypeId": [
+      null
+    ],
+    "fullPathsCustomAliasPublicIds": [
+      []
+    ],
+    "fullPathsDevId": [
+      null
+    ],
+    "fullPathsPublicIds": [
+      "AMoTiNOlr5Uu8vmu20D6Hw"
+    ],
+    "hideByDefault": true,
+    "id": "sysconfig",
+    "includedFiles": [
+      "."
+    ],
+    "includedFilesForDownload": [
+      "sysconfig_1_14_0"
+    ],
+    "includedResources": [
+      {
+        "package": "sysconfig__1.14.0"
+      }
+    ],
+    "installPath": {
+      "linux": "sysconfig_1_14_0/linux/sysconfig_1_14_0__linux.zip",
+      "macos": "sysconfig_1_14_0/macos/sysconfig_1_14_0__macos.zip",
+      "win": "sysconfig_1_14_0/win/sysconfig_1_14_0__win.zip"
+    },
+    "local": "full",
+    "localPackagePath": "C:/ti/ccs1210/ccs/utils/sysconfig_1.14.0",
+    "metadataVersion": "3.0.0",
+    "modifiedValues": {
+      "rootCategory": [
+        "Software Tools",
+        "SysConfig"
+      ]
+    },
+    "name": "SysConfig",
+    "order": 0,
+    "package": "SysConfig",
+    "packageId": "sysconfig",
+    "packageOrder": 408,
+    "packagePath": "sysconfig_1_14_0",
+    "packageUId": "sysconfig__1.14.0",
+    "packageVersion": "1.14.0",
+    "resourceType": "packageOverview",
+    "rootCategory": [
+      "Software Tools",
+      "SysConfig"
+    ],
+    "semver": "1.14.0",
+    "type": "software",
+    "version": "1.14.0"
+  }
+]

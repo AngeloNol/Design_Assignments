@@ -1,0 +1,15 @@
+
+**** Clean-only build of configuration Debug for project Assignment_3 ****
+
+"C:\\ti\\ccs1210\\ccs\\utils\\bin\\gmake" -k -j 8 clean -O 
+ 
+DEL /F  "Assignment_3.hex"  "configPkg\linker.cmd" "configPkg\compiler.opt"  "Assignment_3.out" 
+DEL /F "AS3.obj" "EK_TM4C123GXL.obj" "uartstdio.obj" 
+DEL /F "AS3.d" "EK_TM4C123GXL.d" "uartstdio.d" 
+RMDIR /S/Q  "configPkg\" 
+Could Not Find C:\Users\Nolas\OneDrive\Desktop\UNLV\fall 2022\CPE403\Assignments\not-github\Assignment 3\Code\Assignment_3\Debug\AS3.obj
+Could Not Find C:\Users\Nolas\OneDrive\Desktop\UNLV\fall 2022\CPE403\Assignments\not-github\Assignment 3\Code\Assignment_3\Debug\AS3.d
+Finished clean
+ 
+
+**** Build Finished ****

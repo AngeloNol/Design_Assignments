@@ -1,0 +1,361 @@
+/*
+ *  ======== empty_min.c ========
+ *  Jose Guevara, DA3, CPE403
+ */
+/* XDCtools Header files */
+#define TARGET_IS_BLIZZARD_RB1
+#include <xdc/std.h>
+#include <xdc/runtime/System.h>
+#include <xdc/cfg/global.h>
+#include <xdc/runtime/Log.h>
+
+/* BIOS Header files */
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Task.h>
+#include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/knl/Task.h>
+
+
+/* TI-RTOS Header files */
+#include <ti/drivers/GPIO.h> //all real time compatible
+#include <ti/drivers/UART.h>
+
+
+/* Board Header file */
+#include "Board.h" //configuration comes from here
+
+//
+#include "inc/hw_i2c.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_gpio.h"
+#include <stdint.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include "driverlib/i2c.h"
+#include "driverlib/debug.h"
+#include "driverlib/gpio.h"
+#include "driverlib/gpio.c"
+#include "driverlib/sysctl.h"
+#include "driverlib/uart.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/adc.h"
+#include "driverlib/adc.c"
+#include "driverlib/sysctl.c"
+#include "driverlib/interrupt.h"
+#include "driverlib/timer.h"
+#include "driverlib/pwm.h"
+#include "driverlib/i2c.h"
+#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
+//#include "utils/uartstdio.c"
+#include "utils/uartstdio.h"
+#include "inc/tm4c123gh6pm.h"
+
+//
+//definitions and global variables
+#define TASKSTACKSIZE   512
+#define PWM_FREQUENCY 100
+
+
+uint32_t count = 0; //gets current count of timer interrupts
+char check; //gets input from user
+uint32_t ui32PinStatus = 0x00000000; //variable to store the pin status of GPIO PortF
+uint32_t ui32Period;
+
+//PWM variables
+volatile uint32_t ui32Load;
+volatile uint32_t ui32PWMClock;
+volatile uint8_t ui8Adjust = 83;
+uint8_t up = 1, down = 0;
+
+//ADC variables
+uint32_t xValue[6];                  // Array to store the ADC values of X
+volatile uint32_t xValueAvg;               // Variable to store the Average of ADC values of X
+char     buffer[4];
+
+
+
+
+//Semaphore_Handle taskSem1,taskSem2;
+Task_Struct task1Struct,task2Struct,task3Struct;
+
+
+Char task1Stack[TASKSTACKSIZE];
+Char task2Stack[TASKSTACKSIZE];
+Char task3Stack[TASKSTACKSIZE];
+
+/*
+ *  ======== heartBeatFxn ========
+ *  Toggle the Board_LED0. The Task_sleep is determined by arg0 which
+ *  is configured for the heartBeat Task instance.
+ */
+void heartBeatFxn(UArg arg0, UArg arg1)
+{
+// Fill heartbeat function
+
+
+    while(1){
+        Task_sleep(1000);
+        GPIO_toggle(Board_LED2);
+    }
+}
+
+
+
+
+//ALL TASKS
+
+//ADC function
+void task1(void)
+{
+    while(1){
+        Semaphore_pend(taskSem1, BIOS_WAIT_FOREVER); //wait for Semaphore from ISR
+
+            //ADC performed, store ADC value
+
+          //TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
+          ADCIntClear(ADC0_BASE, 0);
+          ADCProcessorTrigger(ADC0_BASE, 0);
+          ADCSequenceDataGet(ADC0_BASE, 0, xValue);
+
+           xValueAvg = (xValue[0] + xValue[1] + xValue[2] + xValue[3]
+                              + xValue[4] + xValue[5]+ 4) / 6;
+
+
+	}
+
+}
+
+//UART function
+void task2(void)
+{
+    while(1){
+        Semaphore_pend(taskSem2, BIOS_WAIT_FOREVER); //wait for Semaphore from ISR
+
+            //UART performed, display stored ADC value
+        UARTprintf("X: %d\t",xValueAvg );
+        UARTprintf("\n");
+	}
+
+}
+
+//PWM Update function
+void task3(void)
+{
+     while(1){
+        Semaphore_pend(taskSem3, BIOS_WAIT_FOREVER); //wait for Semaphore from ISR
+
+            //Update PWM DC, from the value captured in  
+            if(xValueAvg < 1570){
+                ui8Adjust = xValueAvg;
+
+                if (ui8Adjust < 56)
+                {
+                            ui8Adjust = 56;
+
+                }
+            }
+            if(xValueAvg > 1570){
+                ui8Adjust = xValueAvg;
+
+                if (ui8Adjust > 111)
+                {
+                            ui8Adjust = 111;
+
+                }
+            }
+        }
+}
+
+void Timer_ISR(void)
+{
+    TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);         // must clear timer flag FROM timer
+
+
+
+    // If count = 5 post task1 semaphore
+    if(count == 5){
+        Semaphore_post(taskSem1); //posts semaphore for task to use upon  interrupt
+    }
+    // If count = 10 post task2 semaphore
+    if(count == 10){
+        Semaphore_post(taskSem2); //posts semaphore for task to use upon  interrupt
+    }
+    // If count = 15 post task3 semaphore
+    if(count == 14){
+        Semaphore_post(taskSem3); //posts semaphore for task to use upon  interrupt
+    }
+
+    count++; //increases count that will be used by task function to determine which task to use
+    if(count == 15){
+            count = 0;
+    }
+}
+
+void SWITCH_ISR(void)
+{
+  // Place the current ADC value as the PWM duty cycle.
+   ROM_PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6, ui8Adjust * ui32Load / 100);
+   ui32PinStatus = GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4);
+   if(!ui32PinStatus){
+      UARTprintf("newX: %d\t",xValueAvg );
+      if(ui8Adjust == 100){
+           down = 1;
+           up = 0;
+      }
+      if(ui8Adjust == 1){
+          up = 1;
+          down = 0;
+      }
+
+
+
+   }
+
+}
+
+
+void hardware_init(void)
+{
+
+
+    //Set CPU Clock to 40MHz. 400MHz PLL/2 = 200 DIV 5 = 40MHz
+    SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+    SysCtlPWMClockSet(SYSCTL_PWMDIV_64); //set PWM
+
+	/* 
+	Write GPIO intialization - LED = Output & SWITCH = Input IRQ
+	// ADD Tiva-C GPIO setup - enables port, sets pins 1 pins for output
+    	//switch1 (PF4) input
+	*/
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
+    //ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);//LED
+    GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4);//SW
+    GPIODirModeSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_DIR_MODE_IN);
+    GPIOPadConfigSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+
+    // Turn on the LED
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3,4);//blue led pin F2
+
+    //PWM set up
+	/* 
+	Write PWM intialization & enable PWM
+	*/
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM1);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    GPIOPinTypePWM(GPIO_PORTF_BASE, GPIO_PIN_2);
+    GPIOPinConfigure(GPIO_PF2_M1PWM6); // PF2
+    ui32PWMClock = SysCtlClockGet() / 64;
+    ui32Load = (ui32PWMClock / PWM_FREQUENCY) - 1;
+    PWMGenConfigure(PWM1_BASE, PWM_GEN_3, PWM_GEN_MODE_DOWN);
+    PWMGenPeriodSet(PWM1_BASE, PWM_GEN_3, ui32Load);
+    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_6, ui8Adjust * ui32Load / 100);
+    PWMOutputState(PWM1_BASE, PWM_OUT_6_BIT, true);
+    PWMGenEnable(PWM1_BASE, PWM_GEN_3);
+
+
+    // Timer 2 setup code
+	/* 
+	Write Time 2 intialization & enable interrupt
+	*/
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2);
+    TimerConfigure(TIMER2_BASE, TIMER_CFG_PERIODIC);
+    IntEnable(INT_TIMER2A);
+    ui32Period = (SysCtlClockGet() /2.6);                     // period = CPU clk div 2 (500ms)
+    TimerLoadSet(TIMER2_BASE, TIMER_A, ui32Period);         // set Timer 2 period
+    TimerIntEnable(TIMER2_BASE, TIMER_TIMA_TIMEOUT);        // enables Timer 2 to interrupt CPU
+    IntMasterEnable();
+    TimerEnable(TIMER2_BASE, TIMER_A);
+
+    //UART initialization
+	/* 
+	Write UART intialization - use uartstdio
+	*/
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    GPIOPinConfigure(GPIO_PA0_U0RX);
+    GPIOPinConfigure(GPIO_PA1_U0TX);
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
+    UARTStdioConfig(0, 115200, 16000000);
+
+
+    //ADC initialization
+	/* 
+	Write ADC intialization & select suitable sequence
+	*/
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+    ADCHardwareOversampleConfigure(ADC0_BASE, 64);
+    GPIOPinTypeADC(GPIO_PORTB_BASE, GPIO_PIN_4);//channel 10 for X value
+    ADCSequenceConfigure(ADC0_BASE, 0, ADC_TRIGGER_PROCESSOR, 0);// For X value
+    //x value
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 0, ADC_CTL_CH10);
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 1, ADC_CTL_CH10);
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 2, ADC_CTL_CH10);
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 3, ADC_CTL_CH10);
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 4, ADC_CTL_CH10);
+    ADCSequenceStepConfigure(ADC0_BASE, 0, 5, ADC_CTL_CH10|ADC_CTL_IE|ADC_CTL_END);
+    ADCSequenceEnable(ADC0_BASE, 0);
+
+
+}
+
+
+/*
+ *  ======== main ========
+ */
+int main(void)
+{
+    Task_Params taskParams;
+
+    /* Call board init functions */
+    Board_initGeneral(); //initialize your board and GPIO's active
+    Board_initGPIO();
+    //Board_initI2C();
+    // Board_initSDSPI();
+    // Board_initSPI();
+    Board_initUART();
+    // Board_initUSB(Board_USBDEVICE);
+    // Board_initWatchdog();
+    // Board_initWiFi();
+
+    hardware_init(); //initialize hardware and timer
+
+    //heartbeat idle task thread
+    
+    
+    //tells system to creat a task1
+    Task_Params_init(&taskParams);
+    taskParams.stackSize = TASKSTACKSIZE; //stack size (512 bytes)
+    //stack space used to separate tasks
+    taskParams.stack = &task1Stack; //points to the stack space
+    Task_construct(&task1Struct, (Task_FuncPtr)task1, &taskParams, NULL);
+
+    //tells system to creat a task2
+    Task_Params_init(&taskParams);
+    taskParams.stackSize = TASKSTACKSIZE; //stack size (512 bytes)
+    //stack space used to separate tasks
+    taskParams.stack = &task2Stack; //points to the stack space
+    Task_construct(&task2Struct, (Task_FuncPtr)task2, &taskParams, NULL);
+
+    
+    //tells system to creat a task3
+    Task_Params_init(&taskParams);
+    taskParams.stackSize = TASKSTACKSIZE; //stack size (512 bytes)
+    //stack space used to separate tasks
+    taskParams.stack = &task3Stack; //points to the stack space
+    Task_construct(&task3Struct, (Task_FuncPtr)task3, &taskParams, NULL);
+
+        
+    /* Start BIOS */
+    BIOS_start(); //enable whole system (semaphore, kernel, scheduler, etc.)
+
+    return (0);
+}

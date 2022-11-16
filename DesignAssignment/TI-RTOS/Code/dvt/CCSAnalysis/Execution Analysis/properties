@@ -1,0 +1,7 @@
+#Tue, 15 Nov 2022 19:14:18 -0800
+#Ant properties
+#Tue Nov 15 19:14:18 PST 2022
+p.Version=1.0.0
+
+dvt.activity.name=RTOS Analyzer/Execution Analysis
+dvt.factory.activity=${dvt.basepath}common/analysis/usecases/dvt/SA_Execution.control.xml
