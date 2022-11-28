@@ -1,0 +1,63 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --board "/ti/boards/CC1352R1_LAUNCHXL" --rtos "tirtos" --product "simplelink_cc13xx_cc26xx_sdk@5.30.01.01"
+ * @versions {"tool":"1.10.0+2163"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const Display  = scripting.addModule("/ti/display/Display", {}, false);
+const Display1 = Display.addInstance();
+const ADC      = scripting.addModule("/ti/drivers/ADC", {}, false);
+const ADC1     = ADC.addInstance();
+const Board    = scripting.addModule("/ti/drivers/Board");
+const GPIO     = scripting.addModule("/ti/drivers/GPIO", {}, false);
+const GPIO2    = GPIO.addInstance();
+const PWM      = scripting.addModule("/ti/drivers/PWM", {}, false);
+const PWM1     = PWM.addInstance();
+const Power    = scripting.addModule("/ti/drivers/Power");
+const Timer    = scripting.addModule("/ti/drivers/Timer", {}, false);
+const Timer1   = Timer.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+Display1.$name                    = "Display";
+Display1.$hardware                = system.deviceData.board.components.XDS110UART;
+Display1.useUART2                 = false;
+Display1.uart.$name               = "CONFIG_UART_0";
+Display1.uart.txPinInstance.$name = "CONFIG_GPIO_0";
+Display1.uart.rxPinInstance.$name = "CONFIG_GPIO_1";
+
+ADC1.$name              = "CONFIG_ADC_0";
+ADC1.adc.adcPin.$assign = "boosterpack.2";
+
+GPIO2.$hardware       = system.deviceData.board.components.LED_RED;
+GPIO2.$name           = "REDLED";
+GPIO2.gpioPin.$assign = "boosterpack.39";
+
+PWM1.$name                            = "CONFIG_PWM_0";
+PWM1.$hardware                        = system.deviceData.board.components.LED_GREEN;
+PWM1.timerObject.$name                = "CONFIG_GPTIMER_0";
+PWM1.timerObject.timer.pwmPin.$assign = "boosterpack.40";
+
+const CCFG              = scripting.addModule("/ti/devices/CCFG", {}, false);
+CCFG.ccfgTemplate.$name = "ti_devices_CCFGTemplate0";
+
+Timer1.$name               = "CONFIG_TIMER_0";
+Timer1.timerType           = "32 Bits";
+Timer1.timerInstance.$name = "CONFIG_GPTIMER_1";
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+Display1.uart.uart.$suggestSolution         = "UART0";
+Display1.uart.uart.txPin.$suggestSolution   = "boosterpack.4";
+Display1.uart.uart.rxPin.$suggestSolution   = "boosterpack.3";
+ADC1.adc.$suggestSolution                   = "ADC0";
+PWM1.timerObject.timer.$suggestSolution     = "GPTM1";
+Timer1.timerInstance.timer.$suggestSolution = "GPTM0";
