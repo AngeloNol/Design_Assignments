@@ -7,6 +7,7 @@
 # Components
 Software:
 *  Code Composer  Studio
+  
 Hardware:
 * Tiva C Series TM4C123G LaunchPad
 * CC1352R wireless MCU LaunchPad Kit
