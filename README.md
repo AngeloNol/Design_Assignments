@@ -80,7 +80,6 @@ Hardware:
     4. TI 15.4-Stack - Adding a New Sensor 
 
 # Student Info
-
 * Student Name: Angelo Nolasco
 * Student Email: Nolasco@unlv.nevada.edu
 * youtube link DAs: https://www.youtube.com/playlist?list=PLQKv7ukC_ZvYcFStIp1kRduyU2kAJF1MJ
