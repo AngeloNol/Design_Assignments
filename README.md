@@ -12,11 +12,6 @@ Hardware:
 * CC1352R wireless MCU LaunchPad Kit
 * CC1352R wireless MCU LaunchPad SensorTag Kit
 * USB Logic Analyzer
-* LCD
-* Stepper Motor
-* DC Motor
-* Servo Motor
-* Ultrasonic Sensor
 * MPU-6050
 
 
